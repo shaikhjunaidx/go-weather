@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        #weather {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather Checker</h1>
+    <form method="post" action="/">
+        <input type="text" name="city" placeholder="Enter city name" required>
+        <input type="submit" value="Get Weather">
+    </form>
+    <div id="weather"></div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const city = event.target.city.value;
+            fetch(`/weather/${city}`)
+                .then(response => response.json())
+                .then(data => {
+                    const kelvin = data.main.Kelvin;
+                    const celsius = kelvin - 273.15;
+                    const fahrenheit = (kelvin - 273.15) * 9/5 + 32;
+                    document.getElementById('weather').innerHTML = `
+                        <h2>Weather in ${data.name}</h2>
+                        <p>Temperature: ${celsius.toFixed(2)} &deg;C / ${fahrenheit.toFixed(2)} &deg;F</p>
+                    `;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
