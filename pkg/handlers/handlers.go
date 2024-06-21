@@ -2,11 +2,19 @@ package handlers
 
 import (
 	"encoding/json"
+	"html/template"
 	"net/http"
 	"strings"
-	"text/template"
-	"your-project/internal/weather"
+
+	"github.com/shaikhjunaidx/go-weather/pkg/weather"
 )
+
+type WeatherPageData struct {
+	City      string
+	Celsius   float64
+	Fahrenheit float64
+	Error     string
+}
 
 func WelcomeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Welcome to GoLang weather project!"))
@@ -32,6 +40,21 @@ func FormHandler(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == "POST" {
 		r.ParseForm()
 		city := r.FormValue("city")
-		http.Redirect(w, r, "/weather/"+city, http.StatusSeeOther)
+		data, err := weather.Query(city)
+
+		var pageData WeatherPageData
+		if err != nil {
+			pageData = WeatherPageData{Error: err.Error()}
+		} else {
+			kelvin := data.Main.Kelvin
+			pageData = WeatherPageData{
+				City:      data.Name,
+				Celsius:   kelvin - 273.15,
+				Fahrenheit: (kelvin-273.15)*9/5 + 32,
+			}
+		}
+
+		tmpl, _ := template.ParseFiles("templates/form.html")
+		tmpl.Execute(w, pageData)
 	}
 }

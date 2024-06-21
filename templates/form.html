@@ -53,25 +53,13 @@
         <input type="text" name="city" placeholder="Enter city name" required>
         <input type="submit" value="Get Weather">
     </form>
-    <div id="weather"></div>
-
-    <script>
-        document.querySelector('form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const city = event.target.city.value;
-            fetch(`/weather/${city}`)
-                .then(response => response.json())
-                .then(data => {
-                    const kelvin = data.main.Kelvin;
-                    const celsius = kelvin - 273.15;
-                    const fahrenheit = (kelvin - 273.15) * 9/5 + 32;
-                    document.getElementById('weather').innerHTML = `
-                        <h2>Weather in ${data.name}</h2>
-                        <p>Temperature: ${celsius.toFixed(2)} &deg;C / ${fahrenheit.toFixed(2)} &deg;F</p>
-                    `;
-                })
-                .catch(error => console.error('Error:', error));
-        });
-    </script>
+    <div id="weather">
+        {{if .City}}
+        <h2>Weather in {{.City}}</h2>
+        <p>Temperature: {{printf "%.2f" .Celsius}} &deg;C / {{printf "%.2f" .Fahrenheit}} &deg;F</p>
+        {{else if .Error}}
+        <p>Error: {{.Error}}</p>
+        {{end}}
+    </div>
 </body>
 </html>

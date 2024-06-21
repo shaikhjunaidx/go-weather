@@ -1,0 +1,35 @@
+# Ignore API configuration file
+.apiConfig
+
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Output of the Go coverage tool
+*.out
+
+# Go workspace file
+go.work
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Dependency directories
+vendor/
+node_modules/
+
+# System files
+.DS_Store
+Thumbs.db

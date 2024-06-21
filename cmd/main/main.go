@@ -2,13 +2,14 @@ package main
 
 import (
 	"net/http"
+
 	"github.com/shaikhjunaidx/go-weather/pkg/handlers"
 )
 
 func main() {
-	http.HandleFunc("/welcome", WelcomeHandler)
-	http.HandleFunc("/weather/", WeatherHandler)
-	http.HandleFunc("/", FormHandler)
+	http.HandleFunc("/welcome", handlers.WelcomeHandler)
+	http.HandleFunc("/weather/", handlers.WeatherHandler)
+	http.HandleFunc("/", handlers.FormHandler)
 
 	http.ListenAndServe(":8080", nil)
 }
