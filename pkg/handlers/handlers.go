@@ -10,14 +10,14 @@ import (
 )
 
 type WeatherPageData struct {
-	City      string
-	Celsius   float64
+	City       string
+	Celsius    float64
 	Fahrenheit float64
-	Error     string
+	Error      string
 }
 
 func WelcomeHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Welcome to GoLang weather project!"))
+	w.Write([]byte("Welcome to a simple GoLang weather project!"))
 }
 
 func WeatherHandler(w http.ResponseWriter, r *http.Request) {
@@ -48,8 +48,8 @@ func FormHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			kelvin := data.Main.Kelvin
 			pageData = WeatherPageData{
-				City:      data.Name,
-				Celsius:   kelvin - 273.15,
+				City:       data.Name,
+				Celsius:    kelvin - 273.15,
 				Fahrenheit: (kelvin-273.15)*9/5 + 32,
 			}
 		}
